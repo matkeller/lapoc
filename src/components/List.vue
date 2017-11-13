@@ -1,15 +1,20 @@
 <template>
  <b-container>
-    <b-row class="justify-content-md-center">
-      <b-col cols="12" md="8">
+    <b-row class="container-fluid">
+      <b-col cols="12">
         <h2 align="center">{{msg}}</h2>
 
-    <div>
       <!-- Options for b-table:
                    per-page=5 responsive inverse small bordered striped hover :filter="filter" :items="permits" :fields="fields" -->
       <b-table responsive small striped hover :items="permits" :fields="fields">
+
+        <!-- A custom formatted column -->
+        <template slot="myStatus" scope="data">
+          <b-alert show variant="success">{{ data.item.Status }}</b-alert>
+        </template>
+
       </b-table> 
-    </div>
+
       </b-col>
     </b-row>
  </b-container>
@@ -41,7 +46,7 @@ export default {
           label: 'Description',
           sortable: true
         },
-        Status: {
+        myStatus: {
           label: 'Status',
           sortable: true
         },
@@ -90,7 +95,7 @@ export default {
       })
         .then(function(response) {
 
-          
+          //Fix the formatting of dates to be easier to read
           var fixDates = response.data;
           var i, item;
            for (i = 0; i < fixDates.length; i++) {

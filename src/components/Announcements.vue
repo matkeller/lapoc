@@ -2,7 +2,7 @@
   <b-container>
     <b-row class="justify-content-md-center">
       <b-col cols="12" md="8">
-        <h1>{{ msg }}</h1>
+        <h2 align="center">{{ msg }}</h2>
         <div>
           <!-- Options for b-table:
                    per-page=5 responsive inverse small bordered striped hover :filter="filter" :items="permits" :fields="fields" -->
@@ -27,6 +27,10 @@ export default {
       pagesize: 20,
       offset: 0,
       fields: {
+        SubmittedDate: {
+          label: 'Submitted Date',
+          sortable: true
+        },
         Message: {
           label: "Message",
           sortable: true
@@ -58,7 +62,25 @@ export default {
       })
         .then(function(response) {
           ///vm.status = "Got data!";
-          vm.announcements = response.data;
+
+          //Fix the formatting of dates to be easier to read
+          var fixDates = response.data;
+          var i, item;
+           for (i = 0; i < fixDates.length; i++) {
+            for (item in fixDates[i]) {
+              if (item === "SubmittedDate") {
+                fixDates[i][item] = moment(fixDates[i][item], "YYYY-MM-DD").format("MMM DD, YYYY");
+              }
+              if (item === "StartDate") {
+                fixDates[i][item] = moment(fixDates[i][item], "YYYY-MM-DD").format("MMM DD, YYYY");
+              }
+              if (item === "EndDate") {
+                fixDates[i][item] = moment(fixDates[i][item], "YYYY-MM-DD").format("MMM DD, YYYY");
+              }
+            }
+           }
+          vm.announcements = fixDates;
+
           vm.status =
             "Data last refreshed " +
             moment(Date.now()).format("MMM DD, YYYY") +

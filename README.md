@@ -8,7 +8,9 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# Be sure to update API endpoints under /config in dev.env.js and/or prod.env.js
+
+# serve with hot reload at localhost:9002
 npm run dev
 
 # build for production with minification
